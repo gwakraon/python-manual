@@ -1,0 +1,24 @@
+# web_scraper.py
+
+import requests
+from bs4 import BeautifulSoup
+
+def fetch_hacker_news_titles():
+    """
+    Hacker News 메인 페이지에서 기사 제목을 가져오는 함수
+    """
+    url = "https://news.ycombinator.com/"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        raise Exception(f"페이지를 불러오지 못했습니다. 상태 코드: {response.status_code}")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    titles = soup.select(".titleline > a")
+
+    print("📌 Hacker News 기사 제목 목록:")
+    for idx, title in enumerate(titles, 1):
+        print(f"{idx}. {title.text}")
+
+if __name__ == "__main__":
+    fetch_hacker_news_titles()
